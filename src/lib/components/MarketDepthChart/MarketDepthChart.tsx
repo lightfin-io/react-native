@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 import Svg, { G, Line, Polygon, Text } from 'react-native-svg'
 import { scaleLinear } from 'd3-scale'
 import type { ScaleLinear } from 'd3-scale'
@@ -73,6 +73,8 @@ interface MarketDepthChartProps {
   axisYBottomLineColor?: string
   /** A custom loading node. Defaults to "Loading...". */
   loadingNode?: React.ReactNode
+  /** Styles for the container (outer) view */
+  style?: StyleProp<ViewStyle>
 }
 
 export function MarketDepthChart({
@@ -87,6 +89,7 @@ export function MarketDepthChart({
   axisYBottomLineColor = '#353845',
   axisYLineColor = '#252731',
   loadingNode = <DefaultLoadingNode />,
+  style,
 }: MarketDepthChartProps) {
   const { onLayout, layout } = useLayoutObserver()
 
@@ -245,7 +248,7 @@ export function MarketDepthChart({
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: bgColor }]} onLayout={onLayout}>
+    <View style={[styles.container, style, { backgroundColor: bgColor }]} onLayout={onLayout}>
       {renderContent()}
     </View>
   )

@@ -54,7 +54,7 @@ interface OrderbookProps {
   bidBarColor?: string
   /** Column label of the size columns, defaults to "Size". You could add the base ccy e.g. "Size (BTC)" */
   sizeLabel?: React.ReactNode
-  /** Styles for orderbook container view */
+  /** Styles for the container (outer) view */
   style?: StyleProp<ViewStyle>
   /** Styles for a column cell Text element. Typically used to change font, use `sizeColor`, `bidPriceColor`, `askPriceColor` to change the color. */
   cellTextStyle?: StyleProp<TextStyle>
