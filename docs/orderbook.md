@@ -14,7 +14,7 @@ import { Orderbook } from '@lightfin/react-native'
 
 ## Example
 
-You can find an example of the orderbook in the [OrderbookScreen.tsx](../../src/screens/OrderbookScreen.tsx).
+You can find an example of the orderbook in the [OrderbookScreen.tsx](../../master/src/screens/OrderbookScreen.tsx).
 
 ```tsx
 function OrderbookScreen() {
