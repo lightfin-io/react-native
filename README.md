@@ -26,7 +26,7 @@ https://user-images.githubusercontent.com/760314/162579030-e2268d06-e499-46db-ad
 
 ## Market Depth Chart
 
-https://user-images.githubusercontent.com/760314/162579030-e2268d06-e499-46db-ade3-f0a634a13c35.mov
+https://user-images.githubusercontent.com/760314/162641453-721bb45c-8b83-4352-9990-b04a9ecb0cda.mov
 
 [Market Depth Chart Documentation](docs/market-depth-chart.md)
 
