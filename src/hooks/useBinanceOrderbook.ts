@@ -31,8 +31,6 @@ function updateLevels(levelMap: LevelMap, updates: LevelArrayItem[]) {
       levelMap.set(price, amount)
     }
   })
-
-  return { ...levelMap }
 }
 
 function mapToLevelsArray(levelMap: LevelMap) {
@@ -166,6 +164,8 @@ export function useBinanceOrderbook(symbol: string) {
         updateLevels(bidsMap.current, data.b)
         updateLevels(asksMap.current, data.a)
 
+        // Binance throttles their messages to 1s by default, if your
+        // API doesn't then this state update should be throttled.
         const { bids, maxBidSize } = makeBidLevels(bidsMap.current)
         const { asks, maxAskSize } = makeAskLevels(asksMap.current)
 
