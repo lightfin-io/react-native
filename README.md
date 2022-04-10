@@ -20,13 +20,18 @@ yarn install @lightfin/react-native
 
 ## Orderbook
 
-![orderbook](https://user-images.githubusercontent.com/760314/162643295-f23c6e18-181c-40e2-bb46-50b69bae8398.gif | width=360)
+![orderbook](https://user-images.githubusercontent.com/760314/162643295-f23c6e18-181c-40e2-bb46-50b69bae8398.gif)
+
+<video controls width="360">
+  <source src="https://user-images.githubusercontent.com/760314/162643278-90a79b66-5263-45e9-aa3c-eb1329fdeb99.mov" type="video/mp4">
+    Sorry, your browser doesn't support embedded videos.
+</video>
 
 [Orderbook Documentation](https://github.com/lightfin-io/react-native/docs/orderbook.md)
 
 ## Market Depth Chart
 
-![market-depth-chart](https://user-images.githubusercontent.com/760314/162643309-a62f2933-5389-4223-8c16-689edf0a9377.gif | width=360)
+![market-depth-chart](https://user-images.githubusercontent.com/760314/162643309-a62f2933-5389-4223-8c16-689edf0a9377.gif)
 
 [Market Depth Chart Documentation](https://github.com/lightfin-io/react-native/docs/market-depth-chart.md)
 
