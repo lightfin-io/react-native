@@ -13,7 +13,6 @@ export function OrderbookScreen() {
     <Orderbook
       bids={bids}
       asks={asks}
-      maxLevelsPerSide={20}
       aggregation={{
         baseTickSize,
         tickSizes,

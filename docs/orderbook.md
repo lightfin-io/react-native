@@ -1,6 +1,6 @@
 # Orderbook
 
-https://user-images.githubusercontent.com/760314/162579030-e2268d06-e499-46db-ade3-f0a634a13c35.mov
+https://user-images.githubusercontent.com/760314/162643278-90a79b66-5263-45e9-aa3c-eb1329fdeb99.mov
 
 - Lightweight & virtualized
 - No dependencies
@@ -29,7 +29,6 @@ function OrderbookScreen() {
     <Orderbook
       bids={bids}
       asks={asks}
-      maxLevelsPerSide={20}
       aggregation={{
         baseTickSize,
         tickSizes,

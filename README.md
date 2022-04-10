@@ -20,15 +20,15 @@ yarn install @lightfin/react-native
 
 ## Orderbook
 
-https://user-images.githubusercontent.com/760314/162579030-e2268d06-e499-46db-ade3-f0a634a13c35.mov
+![orderbook](https://user-images.githubusercontent.com/760314/162643295-f23c6e18-181c-40e2-bb46-50b69bae8398.gif)
 
-[Orderbook Documentation](docs/orderbook.md)
+[Orderbook Documentation](https://github.com/lightfin-io/react-native/docs/orderbook.md)
 
 ## Market Depth Chart
 
-https://user-images.githubusercontent.com/760314/162641453-721bb45c-8b83-4352-9990-b04a9ecb0cda.mov
+![market-depth-chart](https://user-images.githubusercontent.com/760314/162643309-a62f2933-5389-4223-8c16-689edf0a9377.gif)
 
-[Market Depth Chart Documentation](docs/market-depth-chart.md)
+[Market Depth Chart Documentation](https://github.com/lightfin-io/react-native/docs/market-depth-chart.md)
 
 #### Running the demo app
 
