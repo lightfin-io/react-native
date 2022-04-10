@@ -14,7 +14,7 @@ import { MarketDepthChart } from '@lightfin/react-native'
 
 ## Example
 
-You can find an example of the Market Depth Chart in the [MarketDepthChartScreen.tsx](../../src/screens/MarketDepthChartScreen.tsx).
+You can find an example of the Market Depth Chart in the [MarketDepthChartScreen.tsx](../../master/src/screens/MarketDepthChartScreen.tsx).
 
 ```tsx
 function MarketDepthChartScreen() {
