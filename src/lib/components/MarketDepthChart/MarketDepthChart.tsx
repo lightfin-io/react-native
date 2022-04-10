@@ -181,69 +181,69 @@ export function MarketDepthChart({
   }, [layout.height, scaleY])
 
   function renderContent() {
+    if (!layout.width || !layout.height) {
+      return null
+    }
+
     if (isEmpty) {
       return loadingNode
     }
 
     return (
-      <>
-        {Boolean(layout.width && layout.height) && (
-          <Svg width={layout.width} height={layout.height}>
-            {yTicks.map(([coord, value]) => (
-              <React.Fragment key={coord}>
-                <Line
-                  x1={0}
-                  y1={coord - halfFontHeight}
-                  x2={layout.width - yAxisWidth - 4}
-                  y2={coord - halfFontHeight}
-                  stroke={axisYLineColor}
-                  strokeWidth="1"
-                />
-                <Text
-                  key={coord}
-                  textAnchor="end"
-                  translateY={coord}
-                  translateX={layout.width - 8}
-                  fill={axisLabelColor}
-                  fontSize={10}
-                >
-                  {abbrevNumFmt(value)}
-                </Text>
-              </React.Fragment>
-            ))}
-            <Polygon
-              points={levelsToPoints(rangedBids, scaleX, scaleY, Side.Bid)}
-              fill={bidFillColor}
-              stroke={bidLineColor}
-              strokeWidth={lineStrokeWidth}
+      <Svg width={layout.width} height={layout.height}>
+        {yTicks.map(([coord, value]) => (
+          <React.Fragment key={coord}>
+            <Line
+              x1={0}
+              y1={coord - halfFontHeight}
+              x2={layout.width - yAxisWidth - 4}
+              y2={coord - halfFontHeight}
+              stroke={axisYLineColor}
+              strokeWidth="1"
             />
-            <Polygon
-              points={levelsToPoints(rangedAsks, scaleX, scaleY, Side.Ask)}
-              fill={askFillColor}
-              stroke={askLineColor}
-              strokeWidth={lineStrokeWidth}
-            />
-            <G translateY={layout.height - xAxisHeight}>
-              <Line x1="0" y1="0" x2={layout.width} y2="0" stroke={bgColor} strokeWidth="2" />
-              <Line x1="0" y1="0" x2={layout.width} y2="0" stroke={axisYBottomLineColor} strokeWidth="1" />
-              {xTicks.map(([coord, value]) => (
-                <React.Fragment key={coord}>
-                  <Line x1={coord} y1="1" x2={coord} y2="6" stroke={axisTickColor} strokeWidth="1" />
-                  <Text
-                    textAnchor="middle"
-                    translateY={20}
-                    translateX={coord}
-                    fill={axisLabelColor}
-                    fontSize={10}
-                  >
-                    {priceFmt(value)}
-                  </Text>
-                </React.Fragment>
-              ))}
-            </G>
-          </Svg>
-        )}
-      </>
+            <Text
+              key={coord}
+              textAnchor="end"
+              translateY={coord}
+              translateX={layout.width - 8}
+              fill={axisLabelColor}
+              fontSize={10}
+            >
+              {abbrevNumFmt(value)}
+            </Text>
+          </React.Fragment>
+        ))}
+        <Polygon
+          points={levelsToPoints(rangedBids, scaleX, scaleY, Side.Bid)}
+          fill={bidFillColor}
+          stroke={bidLineColor}
+          strokeWidth={lineStrokeWidth}
+        />
+        <Polygon
+          points={levelsToPoints(rangedAsks, scaleX, scaleY, Side.Ask)}
+          fill={askFillColor}
+          stroke={askLineColor}
+          strokeWidth={lineStrokeWidth}
+        />
+        <G translateY={layout.height - xAxisHeight}>
+          <Line x1="0" y1="0" x2={layout.width} y2="0" stroke={bgColor} strokeWidth="2" />
+          <Line x1="0" y1="0" x2={layout.width} y2="0" stroke={axisYBottomLineColor} strokeWidth="1" />
+          {xTicks.map(([coord, value]) => (
+            <React.Fragment key={coord}>
+              <Line x1={coord} y1="1" x2={coord} y2="6" stroke={axisTickColor} strokeWidth="1" />
+              <Text
+                textAnchor="middle"
+                translateY={20}
+                translateX={coord}
+                fill={axisLabelColor}
+                fontSize={10}
+              >
+                {priceFmt(value)}
+              </Text>
+            </React.Fragment>
+          ))}
+        </G>
+      </Svg>
     )
   }
 

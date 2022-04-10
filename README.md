@@ -1,6 +1,6 @@
 # Lightfin
 
-A React Native component library for trading and fintech.
+React Native component library for trading and fintech.
 
 - Open source
 - Customizable
