@@ -21,6 +21,7 @@ yarn install @lightfin/react-native
 ## Orderbook
 
 ![orderbook](https://user-images.githubusercontent.com/760314/162643295-f23c6e18-181c-40e2-bb46-50b69bae8398.gif | width=360)
+
 <img alt="Orderbook src="https://user-images.githubusercontent.com/760314/162643295-f23c6e18-181c-40e2-bb46-50b69bae8398.gif" style="max-width: 360px" />
 
 [Orderbook Documentation](https://github.com/lightfin-io/react-native/docs/orderbook.md)
