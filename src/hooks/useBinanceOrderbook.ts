@@ -101,9 +101,8 @@ const emptyOrderbook: Orderbook = {
   maxAskSize: 0,
 }
 
-// 1) Subscribe to depth updates
-// 2) Receive the snapshot (HTTP)
-// 3) Start applying updates (we ignore updateID rules specified in `DepthMessage` for simplicity)
+// Just for demo purposes, a prod implementation should follow the updateID checking rules:
+// https://github.com/binance-us/binance-official-api-docs/blob/master/web-socket-streams.md#how-to-manage-a-local-order-book-correctly
 export function useBinanceOrderbook(symbol: string) {
   const [websocketReady, setWebsocketReady] = useState(false)
   const [orderbook, setOrderbook] = useState(emptyOrderbook)
@@ -146,7 +145,7 @@ export function useBinanceOrderbook(symbol: string) {
     sendJsonMessage({
       id,
       method: 'SUBSCRIBE',
-      params: [`${lowerCaseSymbol}@depth`],
+      params: [`${lowerCaseSymbol}@depth`], // 5,10,20
     })
 
     return () => {

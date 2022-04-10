@@ -41,7 +41,7 @@ export function levelsToPoints(levels: OBLevel[], scaleX: Scale, scaleY: Scale, 
     if (side === Side.Bid) {
       s += ` ${scaleX(0)}, ${scaleY(levels.at(-1)?.cumSize ?? 0)} ${scaleX(0)}, ${scaleY(0)}`
     } else {
-      // + 2 so the stroke isn't visible
+      // + 3 so the stroke isn't visible
       const endX = scaleX.domain()[1] + 3
       s += ` ${scaleX(endX)}, ${scaleY(levels.at(-1)?.cumSize ?? 0)} ${scaleX(endX)}, ${scaleY(0)}`
     }
@@ -96,6 +96,8 @@ export function MarketDepthChart({
   const fromMid = (priceRange / 100) * midPrice
   const startPrice = midPrice - fromMid
   const endPrice = midPrice + fromMid
+  const bidFillColor = useMemo(() => tinycolor(bidLineColor).setAlpha(0.08).toRgbString(), [bidLineColor])
+  const askFillColor = useMemo(() => tinycolor(askLineColor).setAlpha(0.08).toRgbString(), [askLineColor])
 
   // Slice off orders outside the price range.
   const rangedBids = useMemo(
@@ -208,13 +210,13 @@ export function MarketDepthChart({
             ))}
             <Polygon
               points={levelsToPoints(rangedBids, scaleX, scaleY, Side.Bid)}
-              fill={tinycolor(bidLineColor).setAlpha(0.08).toRgbString()}
+              fill={bidFillColor}
               stroke={bidLineColor}
               strokeWidth={lineStrokeWidth}
             />
             <Polygon
               points={levelsToPoints(rangedAsks, scaleX, scaleY, Side.Ask)}
-              fill={tinycolor(askLineColor).setAlpha(0.08).toRgbString()}
+              fill={askFillColor}
               stroke={askLineColor}
               strokeWidth={lineStrokeWidth}
             />
