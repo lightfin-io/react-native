@@ -2,11 +2,6 @@
 
 https://user-images.githubusercontent.com/760314/162643278-90a79b66-5263-45e9-aa3c-eb1329fdeb99.mov
 
-- Lightweight & virtualized
-- No dependencies
-- Customizable
-- Fast aggregation
-
 ## Installation
 
 ```bash
