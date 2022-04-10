@@ -16,7 +16,9 @@ yarn install @lightfin/react-native
 
 - [Orderbook](#orderbook)
 - [Market Depth Chart](#market-depth-chart)
-- Price Chart (coming soon)
+- Price Chart (coming next)
+- Datagrid (planned)
+- Sparkline (planned)
 
 ## Orderbook
 
