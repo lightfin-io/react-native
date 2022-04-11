@@ -1,0 +1,16 @@
+dist/
+.bundle
+android/
+ios/
+node_modules/
+__tests__/
+.buckconfig
+.prettierrc.yaml
+.ruby-version
+.watchmanconfig
+app.json
+babel.config.js
+Gemfile
+Gemfile.lock
+index.js
+metro.config.js
