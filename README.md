@@ -1,10 +1,12 @@
 # Lightfin
 
+This library is currently in **alpha**.
+
 React Native component library for trading and fintech.
 
 - Open source
 - Customizable
-- Lightweight & performant
+- Native performance: uses [Skia](https://skia.org/) under the hood
 
 #### Installation
 
