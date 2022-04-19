@@ -11,6 +11,7 @@ export function HomeScreen({ navigation }: HomeScreenProps) {
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Button title="Go to Orderbook" onPress={() => navigation.navigate('Orderbook')} />
       <Button title="Go to Market Depth Chart" onPress={() => navigation.navigate('MarketDepthChart')} />
+      <Button title="Go to Price Chart" onPress={() => navigation.navigate('PriceChart')} />
     </View>
   )
 }

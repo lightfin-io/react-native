@@ -1,14 +1,20 @@
 import React, { useMemo } from 'react'
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
-import Svg, { G, Line, Polygon, Text } from 'react-native-svg'
+import { Skia, Canvas, Line, Group, Path, Points, Text, vec } from '@shopify/react-native-skia'
 import { scaleLinear } from 'd3-scale'
 import type { ScaleLinear } from 'd3-scale'
 import tinycolor from 'tinycolor2'
 
 import { NTick, OBLevel } from '../../types'
 import { useLayoutObserver } from '../../hooks'
-import { getMidPrice, abbrevNumFmt, priceFmt } from '../../utils'
-import { getClosestIndex, getClosestIndexRev } from '../../utils/getClosestIndex'
+import {
+  getMidPrice,
+  abbrevNumFmt,
+  priceFmt,
+  getClosestIndex,
+  getClosestIndexRev,
+  monoFamily,
+} from '../../utils'
 
 import { DefaultLoadingNode } from './DefaultLoadingNode'
 
@@ -23,31 +29,38 @@ enum Side {
   Ask,
 }
 
-export function levelsToPoints(levels: OBLevel[], scaleX: Scale, scaleY: Scale, side: Side) {
-  let s = ''
+export function levelsToPath(levels: OBLevel[], scaleX: Scale, scaleY: Scale, side: Side) {
+  const path = Skia.Path.Make()
+
+  if (levels.length <= 1) {
+    return path
+  }
 
   // Start from y 0.
-  if (levels.length > 1) {
-    s += ` ${scaleX(levels.at(0)?.price ?? 0)}, ${scaleY(0)}`
-  }
+  path.moveTo(scaleX(levels.at(0)?.price ?? 0), scaleY(0))
 
   for (let i = 0; i < levels.length; i++) {
     const level = levels[i]
-    s += ` ${scaleX(level.price)},${scaleY(level.cumSize)}`
-  }
+    path.lineTo(scaleX(level.price), scaleY(level.cumSize))
 
-  // Close off the line.
-  if (levels.length > 1) {
-    if (side === Side.Bid) {
-      s += ` ${scaleX(0)}, ${scaleY(levels.at(-1)?.cumSize ?? 0)} ${scaleX(0)}, ${scaleY(0)}`
-    } else {
-      // + 3 so the stroke isn't visible
-      const endX = scaleX.domain()[1] + 3
-      s += ` ${scaleX(endX)}, ${scaleY(levels.at(-1)?.cumSize ?? 0)} ${scaleX(endX)}, ${scaleY(0)}`
+    if (i < levels.length - 1) {
+      const nextLevel = levels[i + 1]
+      path.lineTo(scaleX(nextLevel.price), scaleY(level.cumSize))
     }
   }
 
-  return s.substring(1)
+  // Close off the line.
+  if (side === Side.Bid) {
+    path.lineTo(scaleX(0), scaleY(levels.at(-1)?.cumSize ?? 0))
+    path.lineTo(scaleX(0), scaleY(0))
+  } else {
+    const endX = scaleX.domain()[1] + 3 // + 3 so the stroke isn't visible
+    path.lineTo(scaleX(endX), scaleY(levels.at(-1)?.cumSize ?? 0))
+    path.lineTo(scaleX(endX), scaleY(0))
+  }
+  // path.close()
+
+  return path
 }
 
 interface MarketDepthChartProps {
@@ -85,7 +98,7 @@ export function MarketDepthChart({
   bidLineColor = '#5981f2',
   askLineColor = 'rgb(246, 70, 93)',
   axisLabelColor = '#9ba0bd',
-  axisTickColor = '#bfc5df',
+  axisTickColor = '#4a4c58',
   axisYBottomLineColor = '#353845',
   axisYLineColor = '#252731',
   loadingNode = <DefaultLoadingNode />,
@@ -180,6 +193,15 @@ export function MarketDepthChart({
     return ticks
   }, [layout.height, scaleY])
 
+  const bidPath = useMemo(
+    () => levelsToPath(rangedBids, scaleX, scaleY, Side.Bid),
+    [rangedBids, scaleX, scaleY, Side.Bid]
+  )
+  const askPath = useMemo(
+    () => levelsToPath(rangedAsks, scaleX, scaleY, Side.Ask),
+    [rangedAsks, scaleX, scaleY, Side.Ask]
+  )
+
   function renderContent() {
     if (!layout.width || !layout.height) {
       return null
@@ -190,60 +212,63 @@ export function MarketDepthChart({
     }
 
     return (
-      <Svg width={layout.width} height={layout.height}>
+      <Canvas style={{ width: layout.width, height: layout.height }}>
         {yTicks.map(([coord, value]) => (
           <React.Fragment key={coord}>
             <Line
-              x1={0}
-              y1={coord - halfFontHeight}
-              x2={layout.width - yAxisWidth - 4}
-              y2={coord - halfFontHeight}
-              stroke={axisYLineColor}
-              strokeWidth="1"
+              p1={vec(0, coord - halfFontHeight)}
+              p2={vec(layout.width - yAxisWidth - 4, coord - halfFontHeight)}
+              style="stroke"
+              color={axisYLineColor}
+              strokeWidth={1}
             />
             <Text
-              key={coord}
-              textAnchor="end"
-              translateY={coord}
-              translateX={layout.width - 8}
-              fill={axisLabelColor}
-              fontSize={10}
-            >
-              {abbrevNumFmt(value)}
-            </Text>
+              y={coord - 1}
+              x={layout.width - 28}
+              color={axisLabelColor}
+              size={10}
+              familyName={monoFamily}
+              text={abbrevNumFmt(value)}
+            />
           </React.Fragment>
         ))}
-        <Polygon
-          points={levelsToPoints(rangedBids, scaleX, scaleY, Side.Bid)}
-          fill={bidFillColor}
-          stroke={bidLineColor}
-          strokeWidth={lineStrokeWidth}
-        />
-        <Polygon
-          points={levelsToPoints(rangedAsks, scaleX, scaleY, Side.Ask)}
-          fill={askFillColor}
-          stroke={askLineColor}
-          strokeWidth={lineStrokeWidth}
-        />
-        <G translateY={layout.height - xAxisHeight}>
-          <Line x1="0" y1="0" x2={layout.width} y2="0" stroke={bgColor} strokeWidth="2" />
-          <Line x1="0" y1="0" x2={layout.width} y2="0" stroke={axisYBottomLineColor} strokeWidth="1" />
-          {xTicks.map(([coord, value]) => (
-            <React.Fragment key={coord}>
-              <Line x1={coord} y1="1" x2={coord} y2="6" stroke={axisTickColor} strokeWidth="1" />
-              <Text
-                textAnchor="middle"
-                translateY={20}
-                translateX={coord}
-                fill={axisLabelColor}
-                fontSize={10}
-              >
-                {priceFmt(value)}
-              </Text>
-            </React.Fragment>
-          ))}
-        </G>
-      </Svg>
+        <Path path={bidPath} color={bidFillColor} style="fill" />
+        <Path path={bidPath} color={bidLineColor} style="stroke" strokeWidth={lineStrokeWidth} />
+        <Path path={askPath} color={askFillColor} style="fill" />
+        <Path path={askPath} color={askLineColor} style="stroke" strokeWidth={lineStrokeWidth} />
+        <Group transform={[{ translateY: layout.height - xAxisHeight }]}>
+          <Line p1={vec(0, 0)} p2={vec(layout.width, 0)} color={bgColor} style="stroke" strokeWidth={2} />
+          <Line
+            p1={vec(0, 0)}
+            p2={vec(layout.width, 0)}
+            color={axisYBottomLineColor}
+            style="stroke"
+            strokeWidth={1}
+          />
+          {xTicks.map(([coord, value]) => {
+            const label = priceFmt(value)
+            return (
+              <React.Fragment key={coord}>
+                <Line
+                  p1={vec(coord, 1)}
+                  p2={vec(coord, 6)}
+                  color={axisTickColor}
+                  style="stroke"
+                  strokeWidth={1}
+                />
+                <Text
+                  y={20}
+                  x={coord - (label.length / 2) * 5}
+                  color={axisLabelColor}
+                  familyName={monoFamily}
+                  size={10}
+                  text={label}
+                />
+              </React.Fragment>
+            )
+          })}
+        </Group>
+      </Canvas>
     )
   }
 

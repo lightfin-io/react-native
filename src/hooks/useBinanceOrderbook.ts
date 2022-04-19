@@ -101,19 +101,27 @@ const emptyOrderbook: Orderbook = {
 
 // Just for demo purposes, a prod implementation should follow the updateID checking rules:
 // https://github.com/binance-us/binance-official-api-docs/blob/master/web-socket-streams.md#how-to-manage-a-local-order-book-correctly
-export function useBinanceOrderbook(symbol: string) {
+export function useBinanceOrderbook(marketId: string) {
   const [websocketReady, setWebsocketReady] = useState(false)
   const [orderbook, setOrderbook] = useState(emptyOrderbook)
   const bidsMap = useRef<LevelMap>(new Map())
   const asksMap = useRef<LevelMap>(new Map())
-  // Some of their APIs need lowercase, some upper... 💩
-  const lowerCaseSymbol = useMemo(() => symbol.toLowerCase(), [symbol])
+  // Some of their APIs need lowercase, some upper...
+  const lowerMarketId = useMemo(() => marketId.toLowerCase(), [marketId])
 
   // Snapshot.
   useEffect(() => {
     if (websocketReady) {
       setOrderbook(emptyOrderbook)
-      fetch(`https://api.binance.com/api/v3/depth?symbol=${symbol}&limit=1000`)
+      fetch(`https://api.binance.com/api/v3/depth?symbol=${marketId}&limit=1000`)
+        .then(r => {
+          if (!r.ok) {
+            const err = new Error(r.statusText)
+            ;(err as any).code = r.status
+            throw err
+          }
+          return r
+        })
         .then(r => r.json() as Promise<SnapshotResponse>)
         .then(r => {
           bidsMap.current = new Map(r.bids)
@@ -131,7 +139,7 @@ export function useBinanceOrderbook(symbol: string) {
           })
         })
     }
-  }, [websocketReady, symbol])
+  }, [websocketReady, marketId])
 
   // Delta.
   const { lastJsonMessage, sendJsonMessage } = useWebSocket('wss://stream.binance.com/stream')
@@ -143,20 +151,20 @@ export function useBinanceOrderbook(symbol: string) {
     sendJsonMessage({
       id,
       method: 'SUBSCRIBE',
-      params: [`${lowerCaseSymbol}@depth`], // 5,10,20
+      params: [`${lowerMarketId}@depth`], // 5,10,20
     })
 
     return () => {
       sendJsonMessage({
         id,
         method: 'UNSUBSCRIBE',
-        params: [`${lowerCaseSymbol}@depth`],
+        params: [`${lowerMarketId}@depth`],
       })
     }
-  }, [sendJsonMessage, lowerCaseSymbol])
+  }, [sendJsonMessage, lowerMarketId])
 
   useEffect(() => {
-    if (lastJsonMessage && lastJsonMessage.stream === `${lowerCaseSymbol}@depth`) {
+    if (lastJsonMessage && lastJsonMessage.stream === `${lowerMarketId}@depth`) {
       setWebsocketReady(true)
 
       if (orderbook.loaded) {
@@ -178,7 +186,7 @@ export function useBinanceOrderbook(symbol: string) {
         })
       }
     }
-  }, [orderbook.loaded, lastJsonMessage, lowerCaseSymbol])
+  }, [orderbook.loaded, lastJsonMessage, lowerMarketId])
 
   return orderbook
 }

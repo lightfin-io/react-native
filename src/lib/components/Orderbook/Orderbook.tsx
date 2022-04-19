@@ -100,7 +100,7 @@ export function Orderbook({
   const askDepth = aggr.asks.at(-1)?.cumSize ?? 0
 
   return (
-    <View style={[style, styles.container]}>
+    <View style={[styles.container, style]}>
       {aggregation?.tickSizes?.length && aggregation?.onTickSizeChange && (
         <AggregationControls
           aggregationBtn={aggregationBtn}

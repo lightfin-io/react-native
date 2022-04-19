@@ -3,7 +3,7 @@ import { NavigationContainer, DarkTheme } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import { RootStackParamList } from './types'
-import { HomeScreen, MarketDepthChartScreen, OrderbookScreen } from './screens'
+import { HomeScreen, MarketDepthChartScreen, OrderbookScreen, PriceChartScreen } from './screens'
 
 const demoTheme = {
   ...DarkTheme,
@@ -24,6 +24,7 @@ export function App() {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="MarketDepthChart" component={MarketDepthChartScreen} />
         <Stack.Screen name="Orderbook" component={OrderbookScreen} />
+        <Stack.Screen name="PriceChart" component={PriceChartScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   )

@@ -8,7 +8,7 @@ import del from 'rollup-plugin-delete'
 const globals = {
   react: 'React',
   'react-native': 'ReactNative',
-  'react-native-svg': 'ReactNativeSVG',
+  '@shopify/react-native-skia': 'ReactNativeSkia',
 }
 const external = Object.keys(globals)
 const extensions = ['.js', '.ts', '.tsx']

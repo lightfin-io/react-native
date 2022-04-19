@@ -8,8 +8,12 @@ React Native component library for trading and fintech.
 
 #### Installation
 
+Install [@shopify/react-native-skia](https://shopify.github.io/react-native-skia/docs/getting-started/installation) in your project.
+
+Then install this library:
+
 ```bash
-yarn install @lightfin/react-native
+yarn add @lightfin/react-native
 ```
 
 #### Components
