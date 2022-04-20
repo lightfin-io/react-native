@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import useWebSocket from 'react-use-websocket'
 
 // m -> minutes; h -> hours; d -> days; w -> weeks; M -> months
@@ -26,7 +26,7 @@ type Candlestick = [
   low: string, // e.g. "0.01575800"
   close: string, // e.g. "0.01577100"
   volume: string, // e.g. "148976.11427815"
-  closeTime: string, // e.g. 1499644799999
+  closeTime: number, // e.g. 1499644799999
   quoteAssetVolumes: string, // e.g. "2434.19055334"
   numberOfTrades: number, // e.g. 308
   baseAssetVolume: string, // e.g. "1756.87402397"
@@ -63,6 +63,7 @@ interface KlineDelta {
 export function useBinanceCandles(marketId: string, interval: Interval, startTime: number, endTime: number) {
   // Some of their APIs need lowercase, some upper...
   const lowerMarketId = useMemo(() => marketId.toLowerCase(), [marketId])
+  const [candles, setCandles] = useState<Record<string, Candlestick>>({})
 
   // Snapshot.
   useEffect(() => {

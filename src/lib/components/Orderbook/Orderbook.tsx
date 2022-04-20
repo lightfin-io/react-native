@@ -17,7 +17,9 @@ interface OBAggregation {
   baseTickSize: number
   /** The currently selected tick size */
   tickSize: number
-  /** The possible tick sizes the user can select. You can omit this and `onTickSizeChange` if you don't want aggregation controls to be rendered. */
+  /** The possible tick sizes the user can select. You can omit
+   * this and `onTickSizeChange` if you don't want aggregation
+   * controls to be rendered */
   tickSizes?: number[]
   /** Called when a user selects another aggregation */
   onTickSizeChange?: (nextTickSize: number) => void
@@ -52,13 +54,17 @@ interface OrderbookProps {
   askBarColor?: string
   /** Color of bid level size bars */
   bidBarColor?: string
-  /** Column label of the size columns, defaults to "Size". You could add the base ccy e.g. "Size (BTC)" */
+  /** Column label of the size columns, defaults to "Size". You
+   * could add the base ccy e.g. "Size (BTC)" */
   sizeLabel?: React.ReactNode
   /** Styles for the container (outer) view */
   style?: StyleProp<ViewStyle>
-  /** Styles for a column cell Text element. Typically used to change font, use `sizeColor`, `bidPriceColor`, `askPriceColor` to change the color. */
+  /** Styles for a column cell Text element. Typically used to
+   * change font, use `sizeColor`, `bidPriceColor`, `askPriceColor`
+   * to change the color. */
   cellTextStyle?: StyleProp<TextStyle>
-  /** A function which receives the mid price and can return a custom mid price node */
+  /** A function which receives the mid price and can return a
+   * custom mid price node */
   midPriceNode?: (midPrice: number) => React.ReactNode
   /** A custom loading node. Defaults to "Loading...". */
   loadingNode?: React.ReactNode

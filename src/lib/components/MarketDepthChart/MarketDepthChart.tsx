@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
-import { Skia, Canvas, Line, Group, Path, Points, Text, vec } from '@shopify/react-native-skia'
+import { Skia, Canvas, Line, Group, Path, Paint, Text, vec } from '@shopify/react-native-skia'
 import { scaleLinear } from 'd3-scale'
 import type { ScaleLinear } from 'd3-scale'
 import tinycolor from 'tinycolor2'
@@ -203,12 +203,12 @@ export function MarketDepthChart({
   )
 
   function renderContent() {
-    if (!layout.width || !layout.height) {
-      return null
-    }
-
     if (isEmpty) {
       return loadingNode
+    }
+
+    if (!layout.width || !layout.height) {
+      return null
     }
 
     return (
@@ -232,10 +232,12 @@ export function MarketDepthChart({
             />
           </React.Fragment>
         ))}
-        <Path path={bidPath} color={bidFillColor} style="fill" />
-        <Path path={bidPath} color={bidLineColor} style="stroke" strokeWidth={lineStrokeWidth} />
-        <Path path={askPath} color={askFillColor} style="fill" />
-        <Path path={askPath} color={askLineColor} style="stroke" strokeWidth={lineStrokeWidth} />
+        <Path path={bidPath} color={bidLineColor} style="stroke" strokeWidth={1}>
+          <Paint color={bidFillColor} />
+        </Path>
+        <Path path={askPath} color={askLineColor} style="stroke" strokeWidth={1}>
+          <Paint color={askFillColor} />
+        </Path>
         <Group transform={[{ translateY: layout.height - xAxisHeight }]}>
           <Line p1={vec(0, 0)} p2={vec(layout.width, 0)} color={bgColor} style="stroke" strokeWidth={2} />
           <Line
@@ -247,6 +249,7 @@ export function MarketDepthChart({
           />
           {xTicks.map(([coord, value]) => {
             const label = priceFmt(value)
+            const centerX = coord - (label.length / 2) * 5
             return (
               <React.Fragment key={coord}>
                 <Line
@@ -258,7 +261,7 @@ export function MarketDepthChart({
                 />
                 <Text
                   y={20}
-                  x={coord - (label.length / 2) * 5}
+                  x={centerX}
                   color={axisLabelColor}
                   familyName={monoFamily}
                   size={10}
