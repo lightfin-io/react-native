@@ -18,7 +18,7 @@ import {
 
 import { DefaultLoadingNode } from './DefaultLoadingNode'
 
-const xAxisHeight = 44
+const xAxisHeight = 30
 const yAxisWidth = 32
 const halfFontHeight = 4
 const lineStrokeWidth = 1.5
