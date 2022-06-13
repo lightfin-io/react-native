@@ -195,11 +195,11 @@ export function MarketDepthChart({
 
   const bidPath = useMemo(
     () => levelsToPath(rangedBids, scaleX, scaleY, Side.Bid),
-    [rangedBids, scaleX, scaleY, Side.Bid]
+    [rangedBids, scaleX, scaleY]
   )
   const askPath = useMemo(
     () => levelsToPath(rangedAsks, scaleX, scaleY, Side.Ask),
-    [rangedAsks, scaleX, scaleY, Side.Ask]
+    [rangedAsks, scaleX, scaleY]
   )
 
   function renderContent() {
